@@ -4,8 +4,9 @@
         <meta charset="UTF-8">
         <link rel="shortcut icon" href="./favicon.png" />
         <meta name="theme-color" content="#000000" />
-        <title>Simple Boilerplate</title>
+        <title>Book Search</title>
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="src/css/index.css">
         <!-- Add additional CSS & JS files as necessary here -->
     </head>
@@ -14,7 +15,8 @@
         <div class="jumbotron">
           <div class="page-header" id="title"><h1>Book Finder</h1></div>
           <div id="searchbox">
-            <input class="form-control form-rounded" id="book_search" type="text" placeholder="Search.." onkeyup="update_books(this)">
+            <input class="form-control form-rounded" id="book_search" type="text" placeholder="Search..">
+            <button type="submit" onClick="update_books()"><i class="fa fa-search"></i></button>
           </div>
         </div>
         <div id="root" class="container-fluid">

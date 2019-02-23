@@ -1,15 +1,17 @@
 // Example of DOM Manipulation with Pure JavaScript
 
 // update books function
-const update_books = (search) => {
+const update_books = () => {
   // console.log(search_text);
+  search_text = document.getElementById("book_search").value
+  // search_text = search_text
   if(search.value != ""){
     $.ajax({
-      url:'https://www.googleapis.com/books/v1/volumes?q='+search.value+'&key=' + API_KEY,
+      url:'https://www.googleapis.com/books/v1/volumes?q='+search_text+'&maxResults=30&key=' + API_KEY,
       success: function(json){
         var htmlcontent = "";
         for (i = 0; i < json.items.length; i++){
-          console.log(json.items[i])
+          // console.log(json.items[i])
           let book_object = json.items[i]
           let author = "No Authors Found"
           if("authors" in book_object.volumeInfo){
@@ -26,11 +28,15 @@ const update_books = (search) => {
             publisher = book_object.volumeInfo.publisher
           }
           let title = book_object.volumeInfo.title
-          let info = "https://" + book_object.volumeInfo.infoLink
+          let info = book_object.volumeInfo.infoLink
 
           htmlcontent += create_cards(imageLink, title, author, publisher, info)
         }
-        document.getElementById("books").innerHTML =  htmlcontent;
+        if(htmlcontent != ""){
+          document.getElementById("books").innerHTML =  htmlcontent;
+        }else {
+          document.getElementById("books").innerHTML =  "<p>No books found</p>";
+        }
       }
     });
   }
@@ -41,7 +47,7 @@ const create_cards = (img, title, author, publisher, moreInfo) => {
   return "<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'><div class='card' style='width: 18rem;'>"+
     "<img class='img-thumbnail' src='"+img+"' alt='Thumbnail Not Found'>"+
     "<div class='card-body'>"+
-      "<h5 class='card-title'>"+title+"+</h5>"+
+      "<h7 class='card-title'>"+title+"+</h7>"+
       "<p class='card-text'>By: "+author+"</p><p class='card-text'>Published By: "+publisher+"</p>"+
       "<a href="+moreInfo+" class='btn btn-primary'>See the Book</a>"+
     "</div>"+

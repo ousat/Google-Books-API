@@ -21,3 +21,14 @@ body {
   margin-bottom: 8px;
   font-size: 17px;
 }
+
+.img-thumbnail{
+  width: 50%;
+  height: 200px;
+  margin-left: 25%;
+  margin-top: 5%;
+}
+
+p {
+  font-size: 12px;
+}
