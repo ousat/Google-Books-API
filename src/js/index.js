@@ -1,24 +1,49 @@
 // Example of DOM Manipulation with Pure JavaScript
 
-const changeSubtextBackground = () => {
-  // document.querySelector() selects an HTML element from the page by its attribute
-    // ids are selected with the '#' preceeding the ID name
+// update books function
+const update_books = (search) => {
+  // console.log(search_text);
+  if(search.value != ""){
+    $.ajax({
+      url:'https://www.googleapis.com/books/v1/volumes?q='+search.value+'&key=' + API_KEY,
+      success: function(json){
+        var htmlcontent = "";
+        for (i = 0; i < json.items.length; i++){
+          console.log(json.items[i])
+          let book_object = json.items[i]
+          let author = "No Authors Found"
+          if("authors" in book_object.volumeInfo){
+            if(book_object.volumeInfo.authors.length > 0){
+              author = json.items[i].volumeInfo.authors[0]
+            }
+          }
+          let imageLink = ""
+          if("imageLinks" in book_object.volumeInfo){
+            imageLink = book_object.volumeInfo.imageLinks.thumbnail
+          }
+          let publisher = "No Publishers Found"
+          if("publisher" in book_object.volumeInfo){
+            publisher = book_object.volumeInfo.publisher
+          }
+          let title = book_object.volumeInfo.title
+          let info = "https://" + book_object.volumeInfo.infoLink
 
-  // here we are selecting the <p id='subtext'></p> tag in our index.html
-  const subtext = document.querySelector('#subtext');
-  // this sets the 'style' attribute of the HTML element we selected
-  // the same as writing <p id='subtext' style="background-color: blue;"></p> in HTML
-  subtext.setAttribute('style', "background-color: blue" );
+          htmlcontent += create_cards(imageLink, title, author, publisher, info)
+        }
+        document.getElementById("books").innerHTML =  htmlcontent;
+      }
+    });
+  }
 }
 
-// calling a function from other.js
-// remember to import it into index.html and in the correct order of what is initiated
-exampleJavaScriptFn();
 
-
-// now we call the function defined above
-// it will select the HTML element with id='subtext'
-// then it will color its background blue
-changeSubtextBackground();
-
-
+const create_cards = (img, title, author, publisher, moreInfo) => {
+  return "<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'><div class='card' style='width: 18rem;'>"+
+    "<img class='img-thumbnail' src='"+img+"' alt='Thumbnail Not Found'>"+
+    "<div class='card-body'>"+
+      "<h5 class='card-title'>"+title+"+</h5>"+
+      "<p class='card-text'>By: "+author+"</p><p class='card-text'>Published By: "+publisher+"</p>"+
+      "<a href="+moreInfo+" class='btn btn-primary'>See the Book</a>"+
+    "</div>"+
+  "</div></div>"
+}
